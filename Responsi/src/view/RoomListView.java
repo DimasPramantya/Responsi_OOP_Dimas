@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import model.Room;
+import model.Renter;
 import controller.RoomController;
 import java.util.List;
 
@@ -40,15 +41,26 @@ public class RoomListView implements ActionListener, ItemListener{
         window.add(bcancel);
         scrollPane.setBounds(20, 35, 500, 300);
         bcancel.setBounds(20, 350, 100,50);
+        bcancel.addActionListener(this);
         
         showData();
-        tabel.addMouseListener(new MouseAdapter(){
-            public void mouseClicked(MouseEvent e){
-                int row = tabel.rowAtPoint(e.getPoint());
-                Object name =  tabel.getValueAt(row, 0);
-                System.out.println(name.toString());
-                RenterDataView renterDataView = new RenterDataView();
-                renterDataView.window.setVisible(true);
+        tabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    String status = (String) tabel.getValueAt(row, 3);
+                    if(status.equals("Post Malone")){
+                        JOptionPane.showMessageDialog(window, "The room is already RENTED!");
+                    }else{
+                        Renter renter = new Renter("", "", "", 0, 0, "", "");
+                        String room = (String) target.getValueAt(row, 0);
+                        renter.setRoom(room);
+                        RenterDataView renterDataView = new RenterDataView(renter);
+                        renterDataView.window.setVisible(true);
+                        window.dispose();
+                    }
+                }
             }
         });
     }
@@ -73,8 +85,12 @@ public class RoomListView implements ActionListener, ItemListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-        
+    public void actionPerformed(ActionEvent button) {
+        if(button.getSource()==bcancel){
+            LoginPageView loginPageView = new LoginPageView();
+            loginPageView.setVisible(true);
+            window.dispose();
+        }
     }
 
     @Override

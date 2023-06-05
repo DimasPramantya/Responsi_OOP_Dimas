@@ -43,4 +43,16 @@ public class RoomTable {
         }
         return roomList;
     }
+    
+    public void updateRoom(String roomName){
+        try {
+            String query = "UPDATE rooms SET status = ? WHERE name = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, "Post Malone");
+            statement.setString(2, roomName);
+            statement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

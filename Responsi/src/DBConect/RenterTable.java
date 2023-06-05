@@ -12,7 +12,7 @@ import model.Renter;
  *
  * @author Lenovo
  */
-public class RenterTable {
+public class RenterTable implements RenterTableAct {
     private Connection connection;
     public RenterTable(){
         try {
@@ -40,9 +40,74 @@ public class RenterTable {
                  Renter renter = new Renter(id, name, contact, duration, bill, status, room);
                  renterList.add(renter);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return renterList;
     }
+
+    @Override
+    public void updateData(Renter renter) {
+        try {
+            String query = "UPDATE renter SET name = ?, contact = ?, duration = ?, bill = ?, status = ?, room = ? WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, renter.getName());
+            statement.setString(2, renter.getContact());
+            statement.setInt(3, renter.getDuration());
+            statement.setInt(4, renter.getBill());
+            statement.setString(5, renter.getStatus());
+            statement.setString(6, renter.getRoom());
+            statement.setString(7, renter.getId());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addData(Renter renter) {
+        try {
+            String query = "INSERT INTO renter (name, id, contact, duration, bill, status, room) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, renter.getName());
+            System.out.println(renter.getName());
+            statement.setString(2, renter.getId());
+            statement.setString(3, renter.getContact());
+            statement.setInt(4, renter.getDuration());
+            statement.setInt(5, renter.getBill());
+            statement.setString(6, renter.getStatus());
+            statement.setString(7, renter.getRoom());
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteData(String id) {
+        try {
+            System.out.println(id);
+            String query = "DELETE FROM renter WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateStatus(String id) {
+        try {
+             String query = "UPDATE renter SET status = ? WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, "Paid");
+            statement.setString(2, id);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
 } 

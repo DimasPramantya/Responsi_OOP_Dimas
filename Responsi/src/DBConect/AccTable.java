@@ -31,8 +31,10 @@ public class AccTable {
             if(resultSet.next()){
                 System.out.println("inside if");
                 person.setPassword(resultSet.getString("password"));
-                person.setRole(resultSet.getString("role"));
-                return person.getRole();
+                if(person.getPassword().equals(loggedPerson.getPassword())){
+                    person.setRole(resultSet.getString("role"));
+                    return person.getRole();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

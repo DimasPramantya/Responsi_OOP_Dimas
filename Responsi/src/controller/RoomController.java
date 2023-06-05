@@ -21,4 +21,8 @@ public class RoomController {
     public List<Room> fetchRoomData(){
         return connection.getRoomList();
     }
+    
+    public void updateStatus(String roomName){
+        connection.updateRoom(roomName);
+    }
 }

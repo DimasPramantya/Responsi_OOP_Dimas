@@ -60,13 +60,19 @@ public class LoginPageView extends JFrame implements ActionListener, ItemListene
         AccController controller = new AccController();
         if(button.getSource() == blogin){
             String result = controller.loginController(username, password);
-            if(result.equals("renter")){
-                RoomListView renterDataView = new RoomListView();
-                renterDataView.window.setVisible(true);           
-            }else if(result.equals("admin")){
-                System.out.println(result);
-                AdminPageView adminPageView = new AdminPageView();
-                adminPageView.window.setVisible(true);
+            if(result != null){
+                if(result.equals("renter")){
+                    RoomListView roomListView = new RoomListView();
+                    roomListView.window.setVisible(true);           
+                    this.dispose();
+                }else if(result.equals("admin")){
+                    System.out.println(result);
+                    AdminPageView adminPageView = new AdminPageView();
+                    adminPageView.window.setVisible(true);
+                    this.dispose();
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "Wrong Email or Password");
             }
         }
     }
